@@ -1,5 +1,5 @@
 name: tappable
-description: "A new Flutter package project."
+description: "A collection of highly customizable, tree-shakable Flutter widgets including Tappable, TappableContainer, TButton, TCheckbox, and TSwitch with Material Design integration."
 version: 0.0.1
 homepage: https://github.com/Matey2010/tappable
 
