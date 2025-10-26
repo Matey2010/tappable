@@ -1,7 +1,7 @@
 name: tappable
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Matey2010/tappable
 
 environment:
   sdk: ^3.9.2
