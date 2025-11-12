@@ -1,9 +1,51 @@
-# Changelog
+# 📋 Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.0] - 2025-11-12
+
+### 🗑️ Deprecated
+
+- **TButton**: Moved to `tappable_elements` package as `TeButton`
+  - Use `package:tappable_elements` for button components
+  - Will be removed in version 1.0.0
+- **TCheckbox**: Moved to `tappable_elements` package as `TeCheckbox`
+  - Use `package:tappable_elements` for checkbox components
+  - Will be removed in version 1.0.0
+- **TSwitch**: Moved to `tappable_elements` package as `TeSwitch`
+  - Use `package:tappable_elements` for switch components
+  - Will be removed in version 1.0.0
+
+### 📦 Package Restructuring
+
+- **Core widgets remain**: `Tappable` and `TappableContainer` are still part of this package
+- **UI elements extracted**: Button, Checkbox, and Switch widgets moved to dedicated `tappable_elements` package
+- **Better separation**: Core touch/tap functionality separated from UI components
+
+### 📝 Migration Guide
+
+```dart
+// Before (tappable 0.0.1)
+import 'package:tappable/tappable.dart';
+
+TButton(onPressed: () {}, child: Text('Click me'))
+
+// After (tappable 0.2.0)
+import 'package:tappable/tappable.dart';  // For Tappable and TappableContainer
+import 'package:tappable_elements/tappable_elements.dart';  // For UI elements
+
+TeButton(onPressed: () {}, child: Text('Click me'))
+```
+
+### 🎯 Rationale
+
+- Improves package modularity and maintainability
+- Allows independent versioning of UI components
+- Reduces dependencies for apps only needing core tap functionality
+- Prepares for future expansion of UI element library
 
 ## [0.0.1] - 2025-10-26
 

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'tappable_container.dart';
 
+@Deprecated(
+  'TButton has been moved to the tappable_elements package as TeButton. '
+  'Use TeButton from package:tappable_elements instead. '
+  'This class will be removed in version 1.0.0.',
+)
 class TButton extends StatelessWidget {
   final Widget? child;
   final VoidCallback? onPressed;

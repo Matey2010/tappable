@@ -3,6 +3,11 @@ import 'tappable.dart';
 
 typedef SwitchBuilder = Widget Function(BuildContext context, bool value);
 
+@Deprecated(
+  'TSwitch has been moved to the tappable_elements package as TeSwitch. '
+  'Use TeSwitch from package:tappable_elements instead. '
+  'This class will be removed in version 1.0.0.',
+)
 class TSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;

@@ -3,6 +3,11 @@ import 'tappable.dart';
 
 typedef CheckboxBuilder = Widget Function(BuildContext context, bool value);
 
+@Deprecated(
+  'TCheckbox has been moved to the tappable_elements package as TeCheckbox. '
+  'Use TeCheckbox from package:tappable_elements instead. '
+  'This class will be removed in version 1.0.0.',
+)
 class TCheckbox extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
