@@ -4,11 +4,13 @@ A collection of highly customizable, tree-shakable Flutter widgets with Material
 
 ## Features
 
-- **🎯 Tappable** - Base widget with Material ink effects and customizable splash colors
+- **🎯 Tappable** - Base widget with flexible tap mechanics system
 - **📦 TappableContainer** - Combines Tappable with Container, auto-syncing border radius
-- **🔘 TButton** - Fully customizable button with disabled states and extensive styling options
-- **☑️ TCheckbox** - Customizable checkbox with builder pattern support
-- **🔄 TSwitch** - Animated switch with smooth transitions and custom styling
+- **✨ Tap Mechanics** - Pluggable tap effects: Ripple, Scale, Press, Opacity, and more
+- **🔗 Composable** - Combine multiple tap mechanics for rich interactions
+- **🔘 TButton** - Fully customizable button with disabled states (DEPRECATED - use tappable_elements)
+- **☑️ TCheckbox** - Customizable checkbox with builder pattern (DEPRECATED - use tappable_elements)
+- **🔄 TSwitch** - Animated switch with smooth transitions (DEPRECATED - use tappable_elements)
 - **🌳 Tree-shakable** - Import only what you need to minimize bundle size
 - **🎨 Highly customizable** - Builder patterns and extensive parameters for complete control
 - **♿ Material Design** - Proper ink effects, theming, and platform integration
@@ -47,11 +49,32 @@ import 'package:tappable/widgets/t_button.dart';
 
 **Tappable Widget**
 ```dart
+// Default ripple effect
 Tappable(
   onTap: () => print('Tapped!'),
   borderRadius: BorderRadius.circular(12),
-  splashColor: Colors.blue.withValues(alpha: 0.3),
   child: Text('Tap me!'),
+)
+
+// With custom tap mechanics
+Tappable(
+  onTap: () => print('Tapped!'),
+  tapMechanics: [
+    RippleTapMechanic(
+      splashColor: Colors.blue.withValues(alpha: 0.3),
+    ),
+  ],
+  child: Text('Custom ripple!'),
+)
+
+// Combine multiple mechanics
+Tappable(
+  onTap: () => print('Tapped!'),
+  tapMechanics: [
+    RippleTapMechanic(),
+    ScaleTapMechanic(scaleFactor: 0.95),
+  ],
+  child: Text('Ripple + Scale!'),
 )
 ```
 
@@ -97,6 +120,146 @@ TappableContainer(
   ),
   padding: EdgeInsets.all(20),
   child: Text('Beautiful Card'),
+)
+```
+
+## Tap Mechanics
+
+Tap mechanics define how widgets respond visually when tapped. Multiple mechanics can be combined to create rich, interactive experiences.
+
+### Available Mechanics
+
+| Mechanic | Description | Use Case |
+|----------|-------------|----------|
+| **RippleTapMechanic** | Material Design ink ripple | Default Material Design apps |
+| **ScaleTapMechanic** | Scales widget on press | iOS-style buttons, modern UIs |
+| **PressTapMechanic** | 3D press effect with shadow | Elevated buttons, realistic interactions |
+| **OpacityTapMechanic** | Fades opacity on press | iOS-style, minimal feedback |
+| **BevelTapMechanic** | 3D trapezoid/raised button | Realistic physical buttons, retro UIs |
+| **NoneTapMechanic** | No visual feedback | Custom interactions, invisible tap areas |
+
+### Single Mechanics
+
+```dart
+// Material ripple (default)
+Tappable(
+  onTap: () {},
+  tapMechanics: [RippleTapMechanic()],
+  child: Text('Ripple'),
+)
+
+// Scale animation
+Tappable(
+  onTap: () {},
+  tapMechanics: [ScaleTapMechanic(scaleFactor: 0.95)],
+  child: Text('Scale'),
+)
+
+// 3D press effect
+Tappable(
+  onTap: () {},
+  tapMechanics: [
+    PressTapMechanic(
+      pressDepth: 4.0,
+      shadowColor: Colors.black26,
+    ),
+  ],
+  child: Text('Press'),
+)
+
+// Opacity fade (iOS-style)
+Tappable(
+  onTap: () {},
+  tapMechanics: [OpacityTapMechanic(opacity: 0.6)],
+  child: Text('Fade'),
+)
+
+// 3D Bevel effect
+Tappable(
+  onTap: () {},
+  tapMechanics: [
+    BevelTapMechanic(
+      direction: BevelDirection.top,
+      bevelHeight: 8.0,
+      bevelColor: Colors.blue.shade700,
+    ),
+  ],
+  child: Container(
+    padding: EdgeInsets.all(16),
+    color: Colors.blue,
+    child: Text('3D Button'),
+  ),
+)
+```
+
+### Combined Mechanics
+
+The real power comes from combining multiple mechanics:
+
+```dart
+// Ripple + Scale: Material feel with modern animation
+Tappable(
+  onTap: () {},
+  tapMechanics: [
+    RippleTapMechanic(splashColor: Colors.blue.withValues(alpha: 0.3)),
+    ScaleTapMechanic(scaleFactor: 0.95),
+  ],
+  child: Text('Ripple + Scale'),
+)
+
+// Press + Opacity: Realistic 3D button
+Tappable(
+  onTap: () {},
+  tapMechanics: [
+    PressTapMechanic(pressDepth: 4.0, shadowColor: Colors.black26),
+    OpacityTapMechanic(opacity: 0.8),
+  ],
+  child: Text('Press + Fade'),
+)
+
+// Triple combo: Maximum feedback
+Tappable(
+  onTap: () {},
+  tapMechanics: [
+    RippleTapMechanic(),
+    ScaleTapMechanic(scaleFactor: 0.92),
+    OpacityTapMechanic(opacity: 0.7),
+  ],
+  child: Text('All Effects'),
+)
+```
+
+### Custom Configuration
+
+Each mechanic accepts custom parameters:
+
+```dart
+ScaleTapMechanic(
+  scaleFactor: 0.85,              // Scale to 85%
+  duration: Duration(milliseconds: 300),  // Slow animation
+  curve: Curves.elasticOut,       // Bouncy curve
+)
+
+PressTapMechanic(
+  pressDepth: 8.0,                // Deep press
+  shadowColor: Colors.red.withValues(alpha: 0.4),
+  shadowBlurRadius: 12.0,         // Large shadow
+  pressedShadowBlurRadius: 4.0,   // Small when pressed
+)
+
+RippleTapMechanic(
+  splashFactory: InkSparkle.splashFactory,  // Material 3 sparkle
+  splashColor: Colors.purple.withValues(alpha: 0.3),
+)
+
+BevelTapMechanic(
+  direction: BevelDirection.bottom,  // Bevel from different directions
+  bevelHeight: 12.0,                 // Large bevel
+  bevelColor: Colors.indigo.shade900,
+  bevelGradient: LinearGradient(    // Optional gradient
+    colors: [Colors.indigo.shade900, Colors.indigo.shade700],
+  ),
+  duration: Duration(milliseconds: 150),
 )
 ```
 
@@ -169,11 +332,17 @@ The full documentation includes:
 
 | Widget | Description |
 |--------|-------------|
-| **Tappable** | Base interactive widget with Material ink effects |
+| **Tappable** | Base interactive widget with pluggable tap mechanics |
 | **TappableContainer** | Combines Tappable with Container, auto-syncs border radius |
-| **TButton** | Highly customizable button built on TappableContainer |
-| **TCheckbox** | Customizable checkbox with Stack-based architecture |
-| **TSwitch** | Animated switch with smooth transitions |
+| **RippleTapMechanic** | Material Design ripple effect |
+| **ScaleTapMechanic** | Scale animation on press |
+| **PressTapMechanic** | 3D press effect with shadow |
+| **OpacityTapMechanic** | Opacity fade on press |
+| **BevelTapMechanic** | 3D trapezoid/raised button effect |
+| **NoneTapMechanic** | No visual feedback |
+| **TButton** | Highly customizable button (DEPRECATED) |
+| **TCheckbox** | Customizable checkbox (DEPRECATED) |
+| **TSwitch** | Animated switch (DEPRECATED) |
 
 ## Why Tappable?
 
