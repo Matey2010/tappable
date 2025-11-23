@@ -18,10 +18,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tappable Examples'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Tappable Examples'), centerTitle: true),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -58,10 +55,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             title: 'Press (3D Effect)',
             description: 'Simulates 3D button press with shadow',
             tapMechanics: [
-              PressTapMechanic(
-                pressDepth: 4.0,
-                shadowColor: Colors.black26,
-              ),
+              PressTapMechanic(pressDepth: 4.0, shadowColor: Colors.black26),
             ],
             color: Colors.orange,
             label: 'Press',
@@ -94,13 +88,31 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             description: 'Realistic 3D raised button effect',
             tapMechanics: [
               BevelTapMechanic(
-                bevelHeight: 6.0,
+                bevelHeight: 14.0,
                 bevelColor: Colors.indigo.shade900,
               ),
             ],
             color: Colors.indigo,
             label: 'Bevel',
             noBorderRadius: true,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.black, width: 3),
+              ),
+              child: const Center(
+                child: Text(
+                  'Test Bevel\nDistortion',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
 
           // 7. Ripple + Scale
@@ -124,10 +136,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             title: 'Press + Opacity',
             description: '3D press effect combined with fade',
             tapMechanics: [
-              PressTapMechanic(
-                pressDepth: 4.0,
-                shadowColor: Colors.black26,
-              ),
+              PressTapMechanic(pressDepth: 4.0, shadowColor: Colors.black26),
               OpacityTapMechanic(opacity: 0.8),
             ],
             color: Colors.deepOrange,
@@ -148,6 +157,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
     required Color color,
     required String label,
     bool noBorderRadius = false,
+    Widget? child,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
@@ -159,10 +169,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
               Container(
                 width: 32,
                 height: 32,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
                 child: Center(
                   child: Text(
                     '$number',
@@ -194,35 +201,34 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
               children: [
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 12),
-                Center(
+                Container(
+                  color: Colors.blueGrey,
                   child: Tappable(
                     onTap: () => _onTap(label),
                     tapMechanics: tapMechanics,
-                    child: Container(
-                      width: 200,
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: noBorderRadius
-                            ? null
-                            : BorderRadius.circular(16),
-                      ),
-                      child: const Text(
-                        'Tap Me!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                    child: child ??
+                        Container(
+                          width: 200,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: color,
+                            borderRadius: noBorderRadius
+                                ? null
+                                : BorderRadius.circular(16),
+                          ),
+                          child: const Text(
+                            'Tap Me!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                 ),
               ],
