@@ -268,25 +268,13 @@ class _BevelAnimationState extends State<_BevelAnimation>
   }
 
   /// Gets the content offset based on bevel direction
-  /// Content starts offset AWAY from raised side, moves TOWARD it when pressed
+  /// Content expands to fill full space when pressed (no offset)
   Offset _getContentOffset(
     BevelDirection direction,
     double currentBevelHeight,
   ) {
-    switch (direction) {
-      case BevelDirection.top:
-        // Raised top: content offset DOWN, moves UP when pressed
-        return Offset(0, currentBevelHeight);
-      case BevelDirection.bottom:
-        // Raised bottom: content offset UP, moves DOWN when pressed
-        return Offset(0, -currentBevelHeight);
-      case BevelDirection.left:
-        // Raised left: content offset RIGHT, moves LEFT when pressed
-        return Offset(currentBevelHeight, 0);
-      case BevelDirection.right:
-        // Raised right: content offset LEFT, moves RIGHT when pressed
-        return Offset(-currentBevelHeight, 0);
-    }
+    // No offset needed - content area is defined by clipper
+    return Offset.zero;
   }
 }
 
@@ -310,37 +298,41 @@ class _BevelClipper extends CustomClipper<Path> {
     switch (direction) {
       case BevelDirection.top:
         // Top is wider (raised), bottom is narrower
-        path.moveTo(bh, 0);
-        path.lineTo(w - bh, 0);
-        path.lineTo(w, h);
-        path.lineTo(0, h);
+        // Content area: wide at top, narrow at bottom
+        path.moveTo(0, bh);           // top left at y=bh
+        path.lineTo(w, bh);           // top right at y=bh
+        path.lineTo(w - bh, h);       // bottom right (narrower)
+        path.lineTo(bh, h);           // bottom left (narrower)
         path.close();
         break;
 
       case BevelDirection.bottom:
-        // Bottom is wider (raised), top is narrower
-        path.moveTo(0, 0);
-        path.lineTo(w, 0);
-        path.lineTo(w - bh, h);
-        path.lineTo(bh, h);
+        // Bottom is raised, top is narrower
+        // Content area: wide at top, narrow at bottom
+        path.moveTo(0, 0);            // top left (full width)
+        path.lineTo(w, 0);            // top right (full width)
+        path.lineTo(w - bh, h - bh);  // bottom right (narrower)
+        path.lineTo(bh, h - bh);      // bottom left (narrower)
         path.close();
         break;
 
       case BevelDirection.left:
         // Left is taller (raised), right is shorter
-        path.moveTo(0, bh);
-        path.lineTo(w, 0);
-        path.lineTo(w, h);
-        path.lineTo(0, h - bh);
+        // Content area: tall on left, short on right
+        path.moveTo(bh, 0);           // top left at x=bh
+        path.lineTo(w, bh);           // top right (shorter)
+        path.lineTo(w, h - bh);       // bottom right (shorter)
+        path.lineTo(bh, h);           // bottom left at x=bh
         path.close();
         break;
 
       case BevelDirection.right:
         // Right is taller (raised), left is shorter
-        path.moveTo(0, 0);
-        path.lineTo(w, bh);
-        path.lineTo(w, h - bh);
-        path.lineTo(0, h);
+        // Content area: short on left, tall on right
+        path.moveTo(0, bh);           // top left (shorter)
+        path.lineTo(w - bh, 0);       // top right at x=w-bh
+        path.lineTo(w - bh, h);       // bottom right at x=w-bh
+        path.lineTo(0, h - bh);       // bottom left (shorter)
         path.close();
         break;
     }
@@ -386,89 +378,97 @@ class _BevelBackgroundPainter extends CustomPainter {
     switch (direction) {
       case BevelDirection.top:
         // Top is raised (wider), bottom is narrower
-        // Draw left side triangle
-        path.moveTo(0, 0);
-        path.lineTo(bh, 0);
-        path.lineTo(0, h);
-        path.close();
-
-        // Draw right side triangle
-        path.moveTo(w, 0);
-        path.lineTo(w - bh, 0);
-        path.lineTo(w, h);
-        path.close();
-
-        // Draw top edge (horizontal raised edge)
-        path.moveTo(0, -bh);
-        path.lineTo(w, -bh);
-        path.lineTo(w, 0);
-        path.lineTo(0, 0);
-        path.close();
-        break;
-
-      case BevelDirection.bottom:
-        // Bottom is raised (wider), top is narrower
-        // Draw left side triangle
-        path.moveTo(0, 0);
+        // Draw left diagonal side
+        path.moveTo(0, bh);
+        path.lineTo(bh, bh);
         path.lineTo(bh, h);
         path.lineTo(0, h);
         path.close();
 
-        // Draw right side triangle
+        // Draw right diagonal side
+        path.moveTo(w - bh, bh);
+        path.lineTo(w, bh);
+        path.lineTo(w, h);
+        path.lineTo(w - bh, h);
+        path.close();
+
+        // Draw top edge (horizontal raised edge)
+        path.moveTo(0, 0);
+        path.lineTo(w, 0);
+        path.lineTo(w, bh);
+        path.lineTo(0, bh);
+        path.close();
+        break;
+
+      case BevelDirection.bottom:
+        // Bottom is raised, top is narrower
+        // Draw left diagonal side
+        path.moveTo(0, 0);
+        path.lineTo(bh, h - bh);
+        path.lineTo(bh, h);
+        path.lineTo(0, h);
+        path.close();
+
+        // Draw right diagonal side
         path.moveTo(w, 0);
+        path.lineTo(w - bh, h - bh);
         path.lineTo(w - bh, h);
         path.lineTo(w, h);
         path.close();
 
         // Draw bottom edge (horizontal raised edge)
-        path.moveTo(0, h);
-        path.lineTo(w, h);
-        path.lineTo(w, h + bh);
-        path.lineTo(0, h + bh);
+        path.moveTo(bh, h - bh);
+        path.lineTo(w - bh, h - bh);
+        path.lineTo(w - bh, h);
+        path.lineTo(bh, h);
         path.close();
         break;
 
       case BevelDirection.left:
         // Left is raised (taller), right is shorter
-        // Draw top side triangle
+        // Draw top diagonal side
         path.moveTo(0, 0);
-        path.lineTo(w, 0);
-        path.lineTo(0, bh);
+        path.lineTo(w, bh);
+        path.lineTo(w, bh);
+        path.lineTo(bh, 0);
         path.close();
 
-        // Draw bottom side triangle
-        path.moveTo(0, h);
+        // Draw bottom diagonal side
+        path.moveTo(bh, h);
+        path.lineTo(w, h - bh);
         path.lineTo(w, h);
-        path.lineTo(0, h - bh);
+        path.lineTo(0, h);
         path.close();
 
         // Draw left edge (vertical raised edge)
-        path.moveTo(-bh, 0);
-        path.lineTo(0, 0);
+        path.moveTo(0, 0);
+        path.lineTo(bh, 0);
+        path.lineTo(bh, h);
         path.lineTo(0, h);
-        path.lineTo(-bh, h);
         path.close();
         break;
 
       case BevelDirection.right:
         // Right is raised (taller), left is shorter
-        // Draw top side triangle
-        path.moveTo(w, 0);
-        path.lineTo(0, 0);
-        path.lineTo(w, bh);
+        // Draw top diagonal side
+        path.moveTo(0, bh);
+        path.lineTo(w - bh, 0);
+        path.lineTo(w, 0);
+        path.lineTo(0, bh);
         path.close();
 
-        // Draw bottom side triangle
-        path.moveTo(w, h);
-        path.lineTo(0, h);
-        path.lineTo(w, h - bh);
+        // Draw bottom diagonal side
+        path.moveTo(0, h - bh);
+        path.lineTo(w, h);
+        path.lineTo(w - bh, h);
+        path.lineTo(0, h - bh);
         path.close();
 
         // Draw right edge (vertical raised edge)
-        path.moveTo(w, 0);
-        path.lineTo(w + bh, 0);
-        path.lineTo(w + bh, h);
+        path.moveTo(w - bh, 0);
+        path.lineTo(w, 0);
         path.lineTo(w, h);
+        path.lineTo(w - bh, h);
         path.close();
         break;
     }
