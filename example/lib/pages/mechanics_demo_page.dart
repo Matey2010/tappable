@@ -98,7 +98,6 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
             description: 'Realistic 3D raised button effect',
             tapMechanics: [
               BevelTapMechanic(
-                direction: BevelDirection.bottom,
                 bevelHeight: 6.0,
                 bevelColor: Colors.indigo.shade900,
               ),
@@ -225,100 +224,6 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
             label: 'Deep Press',
           ),
 
-          const SizedBox(height: 32),
-
-          // Header: Bevel Directions
-          const Text(
-            'Bevel Directions',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.indigo,
-            ),
-          ),
-          const Text(
-            'Bevel can be applied from any direction!',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          const Divider(height: 32),
-
-          _buildMechanicDemo(
-            title: 'Bevel from Bottom (Primary)',
-            description: 'Bottom edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.bottom,
-                bevelHeight: 8.0,
-                bevelColor: Colors.cyan.shade900,
-              ),
-            ],
-            color: Colors.cyan,
-            label: 'Bevel Bottom',
-          ),
-
-          _buildMechanicDemo(
-            title: 'Bevel from Top',
-            description: 'Top edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.top,
-                bevelHeight: 8.0,
-                bevelColor: Colors.indigo.shade900,
-              ),
-            ],
-            color: Colors.indigo,
-            label: 'Bevel Top',
-          ),
-
-          _buildMechanicDemo(
-            title: 'Bevel from Left',
-            description: 'Left edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.left,
-                bevelHeight: 8.0,
-                bevelColor: Colors.amber.shade900,
-              ),
-            ],
-            color: Colors.amber,
-            label: 'Bevel Left',
-          ),
-
-          _buildMechanicDemo(
-            title: 'Bevel from Right',
-            description: 'Right edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.right,
-                bevelHeight: 8.0,
-                bevelColor: Colors.lime.shade900,
-              ),
-            ],
-            color: Colors.lime,
-            label: 'Bevel Right',
-          ),
-
-          _buildMechanicDemo(
-            title: 'Large Bevel + Gradient',
-            description: 'High bevel with gradient edge',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.top,
-                bevelHeight: 12.0,
-                bevelColor: Colors.deepPurple.shade900,
-                bevelGradient: LinearGradient(
-                  colors: [
-                    Colors.deepPurple.shade900,
-                    Colors.deepPurple.shade700,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-            ],
-            color: Colors.deepPurple,
-            label: 'Large Bevel',
-          ),
         ],
       ),
     );

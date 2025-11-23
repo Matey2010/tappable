@@ -94,7 +94,6 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             description: 'Realistic 3D raised button effect',
             tapMechanics: [
               BevelTapMechanic(
-                direction: BevelDirection.bottom,
                 bevelHeight: 6.0,
                 bevelColor: Colors.indigo.shade900,
               ),
@@ -133,57 +132,6 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             ],
             color: Colors.deepOrange,
             label: 'Press+Opacity',
-          ),
-
-          // 9. Bevel from Top
-          _buildExample(
-            number: 9,
-            title: 'Bevel from Top',
-            description: 'Top edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.top,
-                bevelHeight: 8.0,
-                bevelColor: Colors.cyan.shade900,
-              ),
-            ],
-            color: Colors.cyan,
-            label: 'Bevel Top',
-            noBorderRadius: true,
-          ),
-
-          // 10. Bevel from Left
-          _buildExample(
-            number: 10,
-            title: 'Bevel from Left',
-            description: 'Left edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.left,
-                bevelHeight: 8.0,
-                bevelColor: Colors.amber.shade900,
-              ),
-            ],
-            color: Colors.amber,
-            label: 'Bevel Left',
-            noBorderRadius: true,
-          ),
-
-          // 11. Bevel from Right
-          _buildExample(
-            number: 11,
-            title: 'Bevel from Right',
-            description: 'Right edge bulges toward user',
-            tapMechanics: [
-              BevelTapMechanic(
-                direction: BevelDirection.right,
-                bevelHeight: 8.0,
-                bevelColor: Colors.lime.shade900,
-              ),
-            ],
-            color: Colors.lime,
-            label: 'Bevel Right',
-            noBorderRadius: true,
           ),
 
           const SizedBox(height: 24),

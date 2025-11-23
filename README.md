@@ -179,7 +179,6 @@ Tappable(
   onTap: () {},
   tapMechanics: [
     BevelTapMechanic(
-      direction: BevelDirection.top,
       bevelHeight: 8.0,
       bevelColor: Colors.blue.shade700,
     ),
@@ -253,7 +252,6 @@ RippleTapMechanic(
 )
 
 BevelTapMechanic(
-  direction: BevelDirection.bottom,  // Bevel from different directions
   bevelHeight: 12.0,                 // Large bevel
   bevelColor: Colors.indigo.shade900,
   bevelGradient: LinearGradient(    // Optional gradient
