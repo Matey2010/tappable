@@ -3,7 +3,6 @@ export 'src/tappable_container.dart';
 export 'src/t_checkbox.dart';
 export 'src/t_switch.dart';
 export 'src/t_button.dart';
-export 'src/keyboard_button.dart';
 
 // Tap mechanics
 export 'src/tap_mechanics/tap_mechanic.dart';

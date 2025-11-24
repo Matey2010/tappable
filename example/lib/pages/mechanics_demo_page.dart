@@ -224,68 +224,8 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
             label: 'Deep Press',
           ),
 
-          const SizedBox(height: 32),
-
-          // Standalone Widgets
-          const Text(
-            'Standalone Widgets',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.indigo,
-            ),
-          ),
-          const Divider(height: 32),
-
-          _buildKeyboardButtonDemo(),
-
         ],
       ),
-    );
-  }
-
-  Widget _buildKeyboardButtonDemo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Keyboard Button (Isometric 3D)',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Mechanical keyboard key with isometric perspective',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[600],
-          ),
-        ),
-        const SizedBox(height: 12),
-        Center(
-          child: TKeyboardButton(
-            onPressed: () => _onTap('Keyboard Button'),
-            width: 100,
-            height: 100,
-            topColor: Colors.grey.shade100,
-            bevelColor: Colors.grey.shade600,
-            depth: 14.0,
-            pressDepth: 10.0,
-            borderRadius: 12.0,
-            child: const Text(
-              'A',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-      ],
     );
   }
 
