@@ -145,31 +145,28 @@ class _TKeyboardButtonState extends State<TKeyboardButton>
             final pressOffset = widget.pressDepth * _animation.value;
             final currentDepth = widget.depth - pressOffset;
 
-            return Align(
-              alignment: Alignment.topCenter,
-              child: Transform.translate(
-                offset: Offset(0, pressOffset * 0.5), // Move button down when pressed
-                child: CustomPaint(
-                  painter: _KeyboardButtonPainter(
-                    topColor: widget.onPressed == null
-                        ? widget.topColor.withOpacity(0.5)
-                        : widget.topColor,
-                    bevelColor: widget.onPressed == null
-                        ? widget.bevelColor.withOpacity(0.5)
-                        : widget.bevelColor,
-                    depth: currentDepth,
-                    borderRadius: widget.borderRadius,
-                    perspective: widget.perspective,
+            return Transform.translate(
+              offset: Offset(0, pressOffset * 0.5), // Move button down when pressed
+              child: CustomPaint(
+                painter: _KeyboardButtonPainter(
+                  topColor: widget.onPressed == null
+                      ? widget.topColor.withOpacity(0.5)
+                      : widget.topColor,
+                  bevelColor: widget.onPressed == null
+                      ? widget.bevelColor.withOpacity(0.5)
+                      : widget.bevelColor,
+                  depth: currentDepth,
+                  borderRadius: widget.borderRadius,
+                  perspective: widget.perspective,
+                ),
+                child: Container(
+                  width: widget.width,
+                  height: widget.height + currentDepth * 0.5, // Adjust for perspective
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(
+                    top: currentDepth * 0.3, // Offset for top face in perspective
                   ),
-                  child: Container(
-                    width: widget.width,
-                    height: widget.height + currentDepth * 0.5, // Adjust for perspective
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(
-                      top: currentDepth * 0.3, // Offset for top face in perspective
-                    ),
-                    child: widget.child,
-                  ),
+                  child: widget.child,
                 ),
               ),
             );
