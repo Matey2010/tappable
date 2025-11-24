@@ -11,4 +11,4 @@ export 'src/tap_mechanics/scale_tap_mechanic.dart';
 export 'src/tap_mechanics/press_tap_mechanic.dart';
 export 'src/tap_mechanics/opacity_tap_mechanic.dart';
 export 'src/tap_mechanics/none_tap_mechanic.dart';
-export 'src/tap_mechanics/bevel_tap_mechanic.dart';
+export 'src/tap_mechanics/raised_edge_tap_mechanic.dart';

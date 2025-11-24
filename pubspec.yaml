@@ -1,6 +1,6 @@
 name: tappable
-description: "Core tappable widgets for Flutter with pluggable tap mechanics. Provides Tappable and TappableContainer with support for Ripple, Scale, Press, Opacity mechanics and more. Combine multiple mechanics for rich interactions."
-version: 0.3.0
+description: "Core tappable widgets for Flutter with pluggable tap mechanics. Provides Tappable and TappableContainer with support for Ripple, Scale, Press, Opacity, and RaisedEdge mechanics. Combine multiple mechanics for rich interactions."
+version: 2.0.1
 homepage: https://github.com/Matey2010/tappable
 
 environment:

@@ -14,9 +14,9 @@ import 'tap_mechanic.dart';
 /// Tappable(
 ///   onTap: () => print('Pressed!'),
 ///   tapMechanics: [
-///     BevelTapMechanic(
-///       bevelHeight: 8.0,
-///       bevelColor: Colors.blue.shade700,
+///     RaisedEdgeTapMechanic(
+///       raisedEdgeHeight: 8.0,
+///       raisedEdgeColor: Colors.blue.shade700,
 ///     ),
 ///   ],
 ///   child: Container(
@@ -26,24 +26,24 @@ import 'tap_mechanic.dart';
 ///   ),
 /// )
 /// ```
-class BevelTapMechanic extends TapMechanic {
+class RaisedEdgeTapMechanic extends TapMechanic {
   /// The height of the raised bottom in pixels.
   ///
   /// This determines how much the button appears to be raised.
   /// When pressed, this animates to 0 (flat).
   ///
   /// Defaults to 6.0 pixels.
-  final double bevelHeight;
+  final double raisedEdgeHeight;
 
   /// The color of the raised bottom edge.
   ///
   /// Typically a darker shade of the main surface color to create depth.
-  final Color bevelColor;
+  final Color raisedEdgeColor;
 
   /// Optional gradient for the bottom edge instead of a solid color.
   ///
-  /// If provided, this overrides [bevelColor].
-  final Gradient? bevelGradient;
+  /// If provided, this overrides [raisedEdgeColor].
+  final Gradient? raisedEdgeGradient;
 
   /// The duration of the press animation.
   ///
@@ -55,11 +55,11 @@ class BevelTapMechanic extends TapMechanic {
   /// Defaults to [Curves.easeInOut].
   final Curve curve;
 
-  /// Creates a bevel tap mechanic.
-  BevelTapMechanic({
-    this.bevelHeight = 6.0,
-    required this.bevelColor,
-    this.bevelGradient,
+  /// Creates a raised edge tap mechanic.
+  RaisedEdgeTapMechanic({
+    this.raisedEdgeHeight = 6.0,
+    required this.raisedEdgeColor,
+    this.raisedEdgeGradient,
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.easeInOut,
   });
@@ -73,11 +73,11 @@ class BevelTapMechanic extends TapMechanic {
   }) {
     if (onTap == null) return child;
 
-    return _BevelAnimation(
+    return _RaisedEdgeAnimation(
       onTap: onTap,
-      bevelHeight: bevelHeight,
-      bevelColor: bevelColor,
-      bevelGradient: bevelGradient,
+      raisedEdgeHeight: raisedEdgeHeight,
+      raisedEdgeColor: raisedEdgeColor,
+      raisedEdgeGradient: raisedEdgeGradient,
       duration: duration,
       curve: curve,
       borderRadius: borderRadius,
@@ -86,22 +86,22 @@ class BevelTapMechanic extends TapMechanic {
   }
 }
 
-/// Stateful widget that handles the bevel animation.
-class _BevelAnimation extends StatefulWidget {
+/// Stateful widget that handles the raised edge animation.
+class _RaisedEdgeAnimation extends StatefulWidget {
   final VoidCallback onTap;
-  final double bevelHeight;
-  final Color bevelColor;
-  final Gradient? bevelGradient;
+  final double raisedEdgeHeight;
+  final Color raisedEdgeColor;
+  final Gradient? raisedEdgeGradient;
   final Duration duration;
   final Curve curve;
   final BorderRadius? borderRadius;
   final Widget child;
 
-  const _BevelAnimation({
+  const _RaisedEdgeAnimation({
     required this.onTap,
-    required this.bevelHeight,
-    required this.bevelColor,
-    required this.bevelGradient,
+    required this.raisedEdgeHeight,
+    required this.raisedEdgeColor,
+    required this.raisedEdgeGradient,
     required this.duration,
     required this.curve,
     required this.borderRadius,
@@ -109,10 +109,10 @@ class _BevelAnimation extends StatefulWidget {
   });
 
   @override
-  State<_BevelAnimation> createState() => _BevelAnimationState();
+  State<_RaisedEdgeAnimation> createState() => _RaisedEdgeAnimationState();
 }
 
-class _BevelAnimationState extends State<_BevelAnimation>
+class _RaisedEdgeAnimationState extends State<_RaisedEdgeAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -153,19 +153,15 @@ class _BevelAnimationState extends State<_BevelAnimation>
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
-          // Calculate the current bottom height (reduces when pressed)
-          final currentBottomHeight =
-              widget.bevelHeight * (1.0 - _animation.value);
-
           // Calculate scale: when unpressed (animation=0), compressed; when pressed (animation=1), full 100%
-          // Compression factor based on bevelHeight relative to typical button size
-          final compressionFactor = widget.bevelHeight / 100.0;
+          // Compression factor based on raisedEdgeHeight relative to typical button size
+          final compressionFactor = widget.raisedEdgeHeight / 100.0;
           final contentScale =
               1.0 - (compressionFactor * (1.0 - _animation.value));
 
           return Container(
             decoration: BoxDecoration(
-              color: widget.bevelColor,
+              color: widget.raisedEdgeColor,
               borderRadius: widget.borderRadius,
             ),
             child: Stack(

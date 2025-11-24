@@ -82,22 +82,21 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             label: 'None',
           ),
 
-          // 6. Bevel (Bottom)
+          // 6. RaisedEdge (Bottom)
           _buildExample(
             number: 6,
-            title: 'Bevel (Raised Bottom)',
+            title: 'RaisedEdge (Raised Bottom)',
             description:
                 '3D button with raised bottom that lowers when pressed',
             tapMechanics: [
-              BevelTapMechanic(
-                bevelHeight: 12.0,
-
-                bevelColor: Colors.cyan.shade900,
+              RaisedEdgeTapMechanic(
+                raisedEdgeHeight: 12.0,
+                raisedEdgeColor: Colors.cyan.shade900,
               ),
             ],
             color: Colors.cyan,
             border: Border.all(color: Colors.cyanAccent, width: 5),
-            label: 'Bevel',
+            label: 'RaisedEdge',
             borderRadius: BorderRadius.circular(12),
           ),
 
@@ -196,32 +195,30 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
                   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 12),
-                Container(
-                  child: Tappable(
-                    onTap: () => _onTap(label),
-                    borderRadius: effectiveBorderRadius,
-                    tapMechanics: tapMechanics,
-                    child:
-                        child ??
-                        Container(
-                          width: 200,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          decoration: BoxDecoration(
-                            color: color,
-                            borderRadius: effectiveBorderRadius,
-                            border: border,
-                          ),
-                          child: const Text(
-                            'Tap Me!',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                Tappable(
+                  onTap: () => _onTap(label),
+                  borderRadius: effectiveBorderRadius,
+                  tapMechanics: tapMechanics,
+                  child:
+                      child ??
+                      Container(
+                        width: 200,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: effectiveBorderRadius,
+                          border: border,
+                        ),
+                        child: const Text(
+                          'Tap Me!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                  ),
+                      ),
                 ),
               ],
             ),

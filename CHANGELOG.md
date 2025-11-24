@@ -5,6 +5,100 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2025-11-24
+
+### 💥 BREAKING CHANGES
+
+- **Renamed BevelTapMechanic → RaisedEdgeTapMechanic**
+  - Better reflects the actual visual effect (raised edge rather than beveled/angled edges)
+  - Class name: `BevelTapMechanic` → `RaisedEdgeTapMechanic`
+  - Parameters renamed:
+    - `bevelHeight` → `raisedEdgeHeight`
+    - `bevelColor` → `raisedEdgeColor`
+    - `bevelGradient` → `raisedEdgeGradient`
+  - All "bevel" terminology removed from codebase, documentation, and examples
+
+### 🔄 Migration Guide
+
+```dart
+// Before (1.1.0 and earlier)
+BevelTapMechanic(
+  bevelHeight: 8.0,
+  bevelColor: Colors.blue.shade900,
+  bevelGradient: LinearGradient(...),
+)
+
+// After (2.0.1)
+RaisedEdgeTapMechanic(
+  raisedEdgeHeight: 8.0,
+  raisedEdgeColor: Colors.blue.shade900,
+  raisedEdgeGradient: LinearGradient(...),
+)
+```
+
+### 🎯 Rationale
+
+The term "bevel" traditionally refers to angled/slanted edges in UI design. The current implementation creates a raised platform effect with a flat colored edge beneath the button, not true beveled geometry. The new name "RaisedEdgeTapMechanic" accurately describes what the mechanic does and sets the right expectations for users.
+
+This rename is a critical change to prevent confusion, especially as the package may expand to support multi-directional raised edges in the future.
+
+## [1.1.0] - 2025-11-24
+
+### ✨ Added
+
+- **Enhanced Example Pages**
+  - Added `borderRadius` parameter to `_buildExample` and `_buildMechanicDemo` functions
+  - Added `border` parameter for colored borders on example buttons
+  - Examples now support custom border radius configuration
+  - Border radius properly passed to both Tappable widget and child Container
+
+### 🔄 Changed
+
+- **RaisedEdgeTapMechanic Redesign** 🎉
+  - **Simplified architecture**: Removed complex trapezoid clipping and custom painting
+  - **Raised bottom approach**: Clean raised bottom edge that smoothly lowers when pressed
+  - **Vertical scaling effect**: Content scales vertically from compressed to 100% height using `Matrix4.diagonal3Values`
+  - **Top-fixed animation**: Top edge stays fixed while bottom extends downward on press
+  - **No content distortion**: Removed perspective transforms that caused visual artifacts
+  - **Cleaner code**: Reduced from ~285 lines to ~189 lines
+  - **Better performance**: Simpler rendering pipeline with Stack-based layout
+  - **Smooth animation**: Default 200ms duration for natural feel
+  - Perfect for keyboard buttons, game UIs, and retro-style interfaces
+
+- **Duration Update**
+  - RaisedEdgeTapMechanic default duration increased from 100ms to 200ms for smoother animation
+
+### 🐛 Fixed
+
+- Fixed gap between content and raised bottom in RaisedEdgeTapMechanic
+- Fixed content not expanding to full height when pressed
+- Removed unnecessary Container wrappers in examples
+
+### 📝 Documentation
+
+- Updated RaisedEdgeTapMechanic documentation to reflect new simplified design
+- Updated example descriptions to match new behavior
+- Improved code comments for clarity
+
+### 🎯 Migration Notes
+
+The RaisedEdgeTapMechanic API remains unchanged - existing code will work without modifications. However, the visual effect is now simpler and more performant:
+
+```dart
+// Same API, better implementation
+RaisedEdgeTapMechanic(
+  raisedEdgeHeight: 8.0,
+  raisedEdgeColor: Colors.blue.shade900,
+)
+```
+
+The new design provides:
+
+- ✅ Cleaner visual effect (no trapezoid distortion)
+- ✅ Better performance (simpler rendering)
+- ✅ Smoother animation (longer default duration)
+- ✅ More predictable behavior (top stays fixed)
+
 ## [0.3.0] - 2025-11-17
 
 ### ✨ Added
@@ -27,14 +121,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `OpacityTapMechanic`: Opacity fade on press (iOS-style)
     - Configurable opacity level
     - Smooth fade in/out animation
-  - `BevelTapMechanic`: 3D trapezoid/raised button effect
-    - Realistic physical button simulation with beveled edges
-    - Configurable bevel direction (top, bottom, left, right)
-    - Adjustable bevel height for different depth effects
-    - Support for solid color or gradient on bevel edge
+  - `RaisedEdgeTapMechanic`: 3D raised edge/raised button effect
+    - Realistic physical button simulation with raised bottom edge
+    - Configurable raised edge direction (top, bottom, left, right)
+    - Adjustable raised edge height for different depth effects
+    - Support for solid color or gradient on raised edge
     - Content perspective transform that matches 3D surface
-    - Animated borders on raised edge and diagonal beveled sides
-    - Smooth animation between raised (trapezoid) and pressed (flat) states
+    - Animated borders on raised edge
+    - Smooth animation between raised and pressed (flat) states
     - Perfect for retro UIs, game interfaces, and realistic button designs
   - `NoneTapMechanic`: No visual feedback
     - Pure gesture detection without visual effects

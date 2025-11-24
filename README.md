@@ -135,7 +135,7 @@ Tap mechanics define how widgets respond visually when tapped. Multiple mechanic
 | **ScaleTapMechanic** | Scales widget on press | iOS-style buttons, modern UIs |
 | **PressTapMechanic** | 3D press effect with shadow | Elevated buttons, realistic interactions |
 | **OpacityTapMechanic** | Fades opacity on press | iOS-style, minimal feedback |
-| **BevelTapMechanic** | 3D trapezoid/raised button | Realistic physical buttons, retro UIs |
+| **RaisedEdgeTapMechanic** | 3D raised bottom effect with vertical scaling | Keyboard buttons, game UIs, retro interfaces |
 | **NoneTapMechanic** | No visual feedback | Custom interactions, invisible tap areas |
 
 ### Single Mechanics
@@ -174,19 +174,23 @@ Tappable(
   child: Text('Fade'),
 )
 
-// 3D Bevel effect
+// 3D raised edge effect (raised bottom that lowers on press)
 Tappable(
   onTap: () {},
+  borderRadius: BorderRadius.circular(8),
   tapMechanics: [
-    BevelTapMechanic(
-      bevelHeight: 8.0,
-      bevelColor: Colors.blue.shade700,
+    RaisedEdgeTapMechanic(
+      raisedEdgeHeight: 8.0,
+      raisedEdgeColor: Colors.blue.shade900,
     ),
   ],
   child: Container(
     padding: EdgeInsets.all(16),
-    color: Colors.blue,
-    child: Text('3D Button'),
+    decoration: BoxDecoration(
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Text('3D Button', style: TextStyle(color: Colors.white)),
   ),
 )
 ```
@@ -251,13 +255,14 @@ RippleTapMechanic(
   splashColor: Colors.purple.withValues(alpha: 0.3),
 )
 
-BevelTapMechanic(
-  bevelHeight: 12.0,                 // Large bevel
-  bevelColor: Colors.indigo.shade900,
-  bevelGradient: LinearGradient(    // Optional gradient
+RaisedEdgeTapMechanic(
+  raisedEdgeHeight: 12.0,                 // Height of raised bottom
+  raisedEdgeColor: Colors.indigo.shade900, // Bottom edge color
+  raisedEdgeGradient: LinearGradient(    // Optional gradient for bottom
     colors: [Colors.indigo.shade900, Colors.indigo.shade700],
   ),
-  duration: Duration(milliseconds: 150),
+  duration: Duration(milliseconds: 200), // Animation duration
+  curve: Curves.easeInOut,           // Animation curve
 )
 ```
 
@@ -336,7 +341,7 @@ The full documentation includes:
 | **ScaleTapMechanic** | Scale animation on press |
 | **PressTapMechanic** | 3D press effect with shadow |
 | **OpacityTapMechanic** | Opacity fade on press |
-| **BevelTapMechanic** | 3D trapezoid/raised button effect |
+| **RaisedEdgeTapMechanic** | 3D raised bottom effect with vertical scaling |
 | **NoneTapMechanic** | No visual feedback |
 | **TButton** | Highly customizable button (DEPRECATED) |
 | **TCheckbox** | Customizable checkbox (DEPRECATED) |
