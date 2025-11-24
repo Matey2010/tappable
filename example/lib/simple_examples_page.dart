@@ -143,7 +143,159 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
             label: 'Press+Opacity',
           ),
 
+          // 9. Keyboard Button
+          _buildKeyboardButtonExample(),
+
           const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKeyboardButtonExample() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Text(
+                    '9',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Keyboard Button (Isometric 3D)',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 44),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Mechanical keyboard key with different perspectives',
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Left perspective
+                    Column(
+                      children: [
+                        TKeyboardButton(
+                          onPressed: () => _onTap('Keyboard Left'),
+                          width: 80,
+                          height: 80,
+                          topColor: Colors.grey.shade100,
+                          bevelColor: Colors.grey.shade600,
+                          depth: 14.0,
+                          pressDepth: 10.0,
+                          borderRadius: 12.0,
+                          perspective: KeyboardButtonPerspective.left,
+                          child: const Text(
+                            'A',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Left',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                    // Center perspective
+                    Column(
+                      children: [
+                        TKeyboardButton(
+                          onPressed: () => _onTap('Keyboard Center'),
+                          width: 80,
+                          height: 80,
+                          topColor: Colors.grey.shade100,
+                          bevelColor: Colors.grey.shade600,
+                          depth: 14.0,
+                          pressDepth: 10.0,
+                          borderRadius: 12.0,
+                          perspective: KeyboardButtonPerspective.center,
+                          child: const Text(
+                            'S',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Center',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                    // Right perspective
+                    Column(
+                      children: [
+                        TKeyboardButton(
+                          onPressed: () => _onTap('Keyboard Right'),
+                          width: 80,
+                          height: 80,
+                          topColor: Colors.grey.shade100,
+                          bevelColor: Colors.grey.shade600,
+                          depth: 14.0,
+                          pressDepth: 10.0,
+                          borderRadius: 12.0,
+                          perspective: KeyboardButtonPerspective.right,
+                          child: const Text(
+                            'D',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Right',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
