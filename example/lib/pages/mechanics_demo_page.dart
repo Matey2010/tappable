@@ -92,10 +92,10 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
             label: 'None',
           ),
 
-          // Bevel (3D Trapezoid) - BOTTOM PRIMARY
+          // Bevel (Raised Bottom)
           _buildMechanicDemo(
-            title: 'Bevel (3D Trapezoid)',
-            description: 'Realistic 3D raised button effect',
+            title: 'Bevel (Raised Bottom)',
+            description: '3D button with raised bottom that lowers when pressed',
             tapMechanics: [
               BevelTapMechanic(
                 bevelHeight: 6.0,
@@ -235,7 +235,11 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
     required List<TapMechanic> tapMechanics,
     required Color color,
     required String label,
+    BorderRadius? borderRadius,
+    Border? border,
   }) {
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(16);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -258,13 +262,15 @@ class _MechanicsDemoPageState extends State<MechanicsDemoPage> {
         Center(
           child: Tappable(
             onTap: () => _onTap(label),
+            borderRadius: effectiveBorderRadius,
             tapMechanics: tapMechanics,
             child: Container(
               width: 200,
               padding: const EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: effectiveBorderRadius,
+                border: border,
               ),
               child: Text(
                 'Tap Me!',

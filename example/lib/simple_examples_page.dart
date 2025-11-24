@@ -32,6 +32,7 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
           // 1. Ripple
           _buildExample(
             number: 1,
+            borderRadius: BorderRadius.circular(8),
             title: 'Ripple (Default)',
             description: 'Material Design ink ripple effect',
             tapMechanics: [RippleTapMechanic()],
@@ -84,35 +85,20 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
           // 6. Bevel (Bottom)
           _buildExample(
             number: 6,
-            title: 'Bevel (3D Trapezoid)',
-            description: 'Realistic 3D raised button effect',
+            title: 'Bevel (Raised Bottom)',
+            description:
+                '3D button with raised bottom that lowers when pressed',
             tapMechanics: [
               BevelTapMechanic(
-                bevelHeight: 14.0,
-                bevelColor: Colors.indigo.shade900,
+                bevelHeight: 12.0,
+
+                bevelColor: Colors.cyan.shade900,
               ),
             ],
-            color: Colors.indigo,
+            color: Colors.cyan,
+            border: Border.all(color: Colors.cyanAccent, width: 5),
             label: 'Bevel',
-            noBorderRadius: true,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.black, width: 3),
-              ),
-              child: const Center(
-                child: Text(
-                  'Test Bevel\nDistortion',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+            borderRadius: BorderRadius.circular(12),
           ),
 
           // 7. Ripple + Scale
@@ -157,8 +143,14 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
     required Color color,
     required String label,
     bool noBorderRadius = false,
+    BorderRadius? borderRadius,
+    Border? border,
     Widget? child,
   }) {
+    final effectiveBorderRadius = noBorderRadius
+        ? null
+        : (borderRadius ?? BorderRadius.circular(16));
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Column(
@@ -205,19 +197,19 @@ class _SimpleExamplesPageState extends State<SimpleExamplesPage> {
                 ),
                 const SizedBox(height: 12),
                 Container(
-                  color: Colors.blueGrey,
                   child: Tappable(
                     onTap: () => _onTap(label),
+                    borderRadius: effectiveBorderRadius,
                     tapMechanics: tapMechanics,
-                    child: child ??
+                    child:
+                        child ??
                         Container(
                           width: 200,
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
                             color: color,
-                            borderRadius: noBorderRadius
-                                ? null
-                                : BorderRadius.circular(16),
+                            borderRadius: effectiveBorderRadius,
+                            border: border,
                           ),
                           child: const Text(
                             'Tap Me!',

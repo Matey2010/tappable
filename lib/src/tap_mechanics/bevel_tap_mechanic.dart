@@ -1,14 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'tap_mechanic.dart';
 
-// Bevel direction enum removed - using single bottom bevel only
-
-/// A tap mechanic that creates a 3D beveled/raised button effect.
+/// A tap mechanic that creates a 3D raised button effect with a bottom edge.
 ///
-/// This mechanic simulates a realistic 3D button by creating a trapezoid shape
-/// that appears to bulge toward the user. The bottom edge is raised (wider at top,
-/// narrower at bottom). When pressed, the button flattens to a rectangle,
+/// This mechanic simulates a realistic 3D button by adding a visible raised
+/// bottom. When pressed, the button moves down and the bottom shrinks,
 /// creating a satisfying physical button press effect.
 ///
 /// Example:
@@ -29,20 +27,20 @@ import 'tap_mechanic.dart';
 /// )
 /// ```
 class BevelTapMechanic extends TapMechanic {
-  /// The height of the bevel in pixels.
+  /// The height of the raised bottom in pixels.
   ///
-  /// This determines how much the button appears to bulge.
+  /// This determines how much the button appears to be raised.
   /// When pressed, this animates to 0 (flat).
   ///
   /// Defaults to 6.0 pixels.
   final double bevelHeight;
 
-  /// The color of the beveled edge (the visible "side" of the button).
+  /// The color of the raised bottom edge.
   ///
   /// Typically a darker shade of the main surface color to create depth.
   final Color bevelColor;
 
-  /// Optional gradient for the bevel edge instead of a solid color.
+  /// Optional gradient for the bottom edge instead of a solid color.
   ///
   /// If provided, this overrides [bevelColor].
   final Gradient? bevelGradient;
@@ -62,7 +60,7 @@ class BevelTapMechanic extends TapMechanic {
     this.bevelHeight = 6.0,
     required this.bevelColor,
     this.bevelGradient,
-    this.duration = const Duration(milliseconds: 100),
+    this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.easeInOut,
   });
 
@@ -155,130 +153,35 @@ class _BevelAnimationState extends State<_BevelAnimation>
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
-          final currentBevelHeight =
+          // Calculate the current bottom height (reduces when pressed)
+          final currentBottomHeight =
               widget.bevelHeight * (1.0 - _animation.value);
 
-          if (currentBevelHeight == 0) {
-            // No bevel when fully pressed - just return child
-            return widget.child;
-          }
+          // Calculate scale: when unpressed (animation=0), compressed; when pressed (animation=1), full 100%
+          // Compression factor based on bevelHeight relative to typical button size
+          final compressionFactor = widget.bevelHeight / 100.0;
+          final contentScale =
+              1.0 - (compressionFactor * (1.0 - _animation.value));
 
-          return CustomPaint(
-            painter: _BevelBackgroundPainter(
-              bevelHeight: currentBevelHeight,
+          return Container(
+            decoration: BoxDecoration(
               color: widget.bevelColor,
-              gradient: widget.bevelGradient,
+              borderRadius: widget.borderRadius,
             ),
-            child: ClipPath(
-              clipper: _BevelClipper(bevelHeight: currentBevelHeight),
-              child: Transform.scale(
-                scaleY: 1.0 - (currentBevelHeight / 100.0), // Slightly compress vertically
-                alignment: Alignment.center,
-                child: widget.child,
-              ),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Main button content (top stays fixed, expands downward when pressed)
+                Transform(
+                  transform: Matrix4.diagonal3Values(1.0, contentScale, 1.0),
+                  alignment: Alignment.topCenter,
+                  child: widget.child,
+                ),
+              ],
             ),
           );
         },
       ),
     );
-  }
-}
-
-/// Custom clipper that creates the trapezoid shape.
-/// Bottom bevel: top is wider (full width), bottom is narrower.
-class _BevelClipper extends CustomClipper<Path> {
-  final double bevelHeight;
-
-  _BevelClipper({required this.bevelHeight});
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    final w = size.width;
-    final h = size.height;
-    final bh = bevelHeight;
-
-    // Bottom bevel: top is full width, bottom is narrower
-    path.moveTo(0, 0); // top left (full width)
-    path.lineTo(w, 0); // top right (full width)
-    path.lineTo(w - bh, h - bh); // bottom right (narrower)
-    path.lineTo(bh, h - bh); // bottom left (narrower)
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(_BevelClipper oldClipper) {
-    return oldClipper.bevelHeight != bevelHeight;
-  }
-}
-
-/// Custom painter that draws the beveled background (visible side of button).
-/// Bottom bevel: draws left side, right side, and bottom edge.
-class _BevelBackgroundPainter extends CustomPainter {
-  final double bevelHeight;
-  final Color color;
-  final Gradient? gradient;
-
-  _BevelBackgroundPainter({
-    required this.bevelHeight,
-    required this.color,
-    this.gradient,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (bevelHeight <= 0) return; // No bevel when fully pressed
-
-    final paint = Paint()..style = PaintingStyle.fill;
-
-    final w = size.width;
-    final h = size.height;
-    final bh = bevelHeight;
-
-    // Draw the background that represents the visible "sides" of the button
-    // These are the areas that get clipped away when the trapezoid is formed
-    final path = Path();
-
-    // Bottom bevel: bottom is raised
-    // Draw left diagonal side
-    path.moveTo(0, 0);
-    path.lineTo(bh, h - bh);
-    path.lineTo(bh, h);
-    path.lineTo(0, h);
-    path.close();
-
-    // Draw right diagonal side
-    path.moveTo(w, 0);
-    path.lineTo(w - bh, h - bh);
-    path.lineTo(w - bh, h);
-    path.lineTo(w, h);
-    path.close();
-
-    // Draw bottom edge (horizontal raised edge)
-    path.moveTo(bh, h - bh);
-    path.lineTo(w - bh, h - bh);
-    path.lineTo(w - bh, h);
-    path.lineTo(bh, h);
-    path.close();
-
-    // Apply gradient or solid color
-    if (gradient != null) {
-      final rect = Rect.fromLTWH(0, 0, w, h);
-      paint.shader = gradient!.createShader(rect);
-    } else {
-      paint.color = color;
-    }
-
-    // Draw the background (visible beveled sides)
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(_BevelBackgroundPainter oldDelegate) {
-    return oldDelegate.bevelHeight != bevelHeight ||
-        oldDelegate.color != color ||
-        oldDelegate.gradient != gradient;
   }
 }
